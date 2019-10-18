@@ -5,7 +5,7 @@
 Script de comprobación de entrega de práctica
 
 Para ejecutarlo, desde la shell:
- $ python check-p3.py login_github
+ $ python check-p4.py login_gitlab
 
 """
 
@@ -16,9 +16,9 @@ import sys
 
 if len(sys.argv) != 2:
     print()
-    sys.exit("Usage : $ python3 check-p4.py login_github")
+    sys.exit("Usage : $ python3 check-p4.py login_gitlab")
 
-repo_git = "http://github.com/" + sys.argv[1] + "/ptavi-p4"
+repo_git = "http://gitlab.etsit.urjc.es/" + sys.argv[1] + "/ptavi-p4"
 
 python_files = [
      'client.py',
