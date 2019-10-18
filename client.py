@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 """
 Programa cliente UDP que abre un socket a un servidor
 """
