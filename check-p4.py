@@ -5,7 +5,7 @@
 Script de comprobación de entrega de práctica
 
 Para ejecutarlo, desde la shell:
- $ python check-p4.py login_gitlab
+ $ python3 check-p4.py login_gitlab
 
 """
 
@@ -18,43 +18,44 @@ if len(sys.argv) != 2:
     print()
     sys.exit("Usage : $ python3 check-p4.py login_gitlab")
 
-repo_git = "http://gitlab.etsit.urjc.es/" + sys.argv[1] + "/ptavi-p4"
+REPO_GIT = "http://gitlab.etsit.urjc.es/" + sys.argv[1] + "/ptavi-p4"
 
-python_files = [
-     'client.py',
-     'server.py',
+PYTHON_FILES = [
+    'client.py',
+    'server.py',
     ]
 
-files = ['README.md',
-         'LICENSE',
-         '.gitignore',
-         'check-p4.py',
-         'register.libpcap',
-         '.git'
-         ]
+FILES = [
+    'README.md',
+    'LICENSE',
+    '.gitignore',
+    'check-p4.py',
+    'register.libpcap',
+    '.git'
+    ]
 
 aleatorio = str(int(random.random() * 1000000))
 
 error = 0
 
 print()
-print("Clonando el repositorio " + repo_git + "\n")
-os.system('git clone ' + repo_git + ' /tmp/' + aleatorio + ' > /dev/null 2>&1')
+print("Clonando el repositorio " + REPO_GIT + "\n")
+os.system('git clone ' + REPO_GIT + ' /tmp/' + aleatorio + ' > /dev/null 2>&1')
 try:
     student_file_list = os.listdir('/tmp/' + aleatorio)
 except OSError:
     error = 1
-    print("Error: No se ha podido acceder al repositorio " + repo_git + ".")
+    print("Error: No se ha podido acceder al repositorio " + REPO_GIT + ".")
     print()
     sys.exit()
 
-if len(student_file_list) != len(files) + len(python_files):
+if len(student_file_list) != len(FILES) + len(PYTHON_FILES):
     error = 1
     print("Error: solamente hay que subir al repositorio los ficheros")
     print("indicados en las guion de practicas, que son en total")
-    print(str(len(python_files) + len(files)) + " (incluyendo .git):")
+    print(str(len(PYTHON_FILES) + len(FILES)) + " (incluyendo .git):")
 
-for filename in files + python_files:
+for filename in FILES + PYTHON_FILES:
     if filename not in student_file_list:
         error = 1
         print("  Error: " + filename + " no encontrado.",
@@ -65,8 +66,6 @@ if not error:
     print()
     print("La salida de pep8 es: (si todo va bien, no ha de mostrar nada)")
     print()
-    files = ''
-    for python_file in python_files:
-        files += ' /tmp/' + aleatorio + '/' + python_file
-    os.system('pep8 --repeat --show-source --statistics ' + files)
+    files = ['/tmp/' + aleatorio + '/' + file for file in PYTHON_FILES]
+    os.system('pep8 --repeat --show-source --statistics ' + ' '.join(files))
 print()
