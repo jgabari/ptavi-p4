@@ -7,7 +7,7 @@ import socketserver
 import sys
 
 
-class EchoHandler(socketserver.DatagramRequestHandler):
+class SIPRegisterHandler(socketserver.DatagramRequestHandler):
     """
     Echo server class
     """
@@ -18,7 +18,7 @@ class EchoHandler(socketserver.DatagramRequestHandler):
         (all requests will be handled by this method)
         """
         print('Cliente en IP: ' + str(self.client_address[0]) + ', puerto: ' + str(self.client_address[1]))
-        self.wfile.write(b"Hemos recibido tu peticion")
+        self.wfile.write(b"SIP/2.0 200 OK")
         for line in self.rfile:
             print("El cliente nos manda ", line.decode('utf-8'))
 
@@ -30,7 +30,7 @@ if __name__ == "__main__":
         puerto = int(sys.argv[1])
     except NameError:
         print('Usage: server.py puerto')
-    serv = socketserver.UDPServer(('', puerto), EchoHandler)
+    serv = socketserver.UDPServer(('', puerto), SIPRegisterHandler)
 
     print("Lanzando servidor UDP de eco...")
     try:

@@ -10,9 +10,9 @@ import sys
 try:
     SERVER = sys.argv[1]
     PORT = int(sys.argv[2])
-    LINE = ' '.join(sys.argv[3:])
+    LINE = sys.argv[3].upper() + ' sip:' + sys.argv[4] + ' SIP/2.0'
 except NameError:
-    print('Usage: python3 client.py ip puerto linea')
+    print('Usage: python3 client.py ip puerto register luke@polismassa.com')
 
 # Creamos el socket, lo configuramos y lo atamos a un servidor/puerto
 with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as my_socket:
