@@ -19,10 +19,16 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
         (all requests will be handled by this method)
         """
         print('Cliente en IP: ' + str(self.client_address[0]) + ', puerto: ' + str(self.client_address[1]))
+        print('El cliente nos manda:')
         for line in self.rfile:
-            print("El cliente nos manda ", line.decode('utf-8'))
+            print(line.decode('utf-8'))
+            if line.decode('utf-8').split(' ')[0] == 'REGISTER':
+                client = line.decode('utf-8').split(' ')[1].split(':')[1]
+                self.diccionario[client] = self.client_address
+            elif line.decode('utf-8').split(' ')[0] == 'Expires:':
+                if line.decode('utf-8').split(' ')[1].split('\r')[0] == str(0):
+                    del self.diccionario[client]
         self.wfile.write(b"SIP/2.0 200 OK")
-        self.diccionario[line.decode('utf-8').split(' ')[1].split(':')[1]] = self.client_address[0]
 
 
 if __name__ == "__main__":
@@ -31,7 +37,7 @@ if __name__ == "__main__":
     try:
         puerto = int(sys.argv[1])
     except NameError:
-        print('Usage: server.py puerto')
+        sys.exit('Usage: server.py puerto')
     serv = socketserver.UDPServer(('', puerto), SIPRegisterHandler)
 
     print("Lanzando servidor UDP de eco...")
