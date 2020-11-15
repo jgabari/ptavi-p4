@@ -11,6 +11,7 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
     """
     Echo server class
     """
+    diccionario = {}
 
     def handle(self):
         """
@@ -18,9 +19,10 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
         (all requests will be handled by this method)
         """
         print('Cliente en IP: ' + str(self.client_address[0]) + ', puerto: ' + str(self.client_address[1]))
-        self.wfile.write(b"SIP/2.0 200 OK")
         for line in self.rfile:
             print("El cliente nos manda ", line.decode('utf-8'))
+        self.wfile.write(b"SIP/2.0 200 OK")
+        self.diccionario[line.decode('utf-8').split(' ')[1].split(':')[1]] = self.client_address[0]
 
 
 if __name__ == "__main__":
