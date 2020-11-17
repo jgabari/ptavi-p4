@@ -11,7 +11,7 @@ try:
     SERVER = sys.argv[1]
     PORT = int(sys.argv[2])
     LINE = 'REGISTER sip:' + sys.argv[4] + ' SIP/2.0\r\n'
-    LINE += 'Expires: ' + str(sys.argv[5]) + '\r\n\r\n'
+    LINE += 'Expires: ' + str(sys.argv[5]) + '\r\n'
 except IndexError:
     sys.exit('Usage: client.py ip puerto register sip_address expires_value')
 
