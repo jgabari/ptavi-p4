@@ -59,7 +59,8 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
         """
         Look for and delete expired clients
         """
-        for client in self.diccionario:
+        keys = self.diccionario.keys()
+        for client in keys:
             c_time = time.strftime(self.format, time.gmtime(time.time()))
             if 'expires' in self.diccionario[client]:
                 if self.diccionario[client]['expires'] <= c_time:
