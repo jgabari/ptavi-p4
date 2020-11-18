@@ -52,20 +52,20 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
                     expires = time.strftime(self.format, expire_time)
                     self.diccionario[client]['expires'] = expires
                     self.register2json()
-        print(self.diccionario)
+        print(self.diccionario + '\r\n')
         self.wfile.write(b"SIP/2.0 200 OK\r\n\r\n")
 
     def expiration(self):
         """
         Look for and delete expired clients
         """
-        keys = self.diccionario.keys()
+        keys = list(self.diccionario.keys())
         for client in keys:
             c_time = time.strftime(self.format, time.gmtime(time.time()))
             if 'expires' in self.diccionario[client]:
                 if self.diccionario[client]['expires'] <= c_time:
                     del self.diccionario[client]
-                    print('Eliminado ' + client + ' por expiración.\r')
+                    print('Expiró ' + client + '\r')
                     self.register2json()
 
     def register2json(self):
