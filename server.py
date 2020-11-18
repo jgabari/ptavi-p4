@@ -31,16 +31,16 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
         word_list = text.split()
         if word_list[0] == 'REGISTER':
             client = word_list[1].split(':')[1]
-            if not client in self.diccionario:
-                address = str(self.client_address[0])
-                self.diccionario[client] = {'address': address}
-                self.register2json()
-                print('Añadido ' + client + ' al diccionario.\r')
-            else:
+            if client in self.diccionario:
                 address = str(self.client_address[0])
                 self.diccionario[client] = {'address': address}
                 self.register2json()
                 print('Actualizado ' + client + ' en el diccionario.\r')
+            else:
+                address = str(self.client_address[0])
+                self.diccionario[client] = {'address': address}
+                self.register2json()
+                print('Añadido ' + client + ' al diccionario.\r')
             if word_list[3] == 'Expires:':
                 expires_value = int(word_list[4].split('\r')[0])
                 if expires_value == 0:
@@ -84,8 +84,6 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
                 self.diccionario = json.load(jsonfile)
         except FileNotFoundError:
             self.diccionario = self.diccionario
-
-
 
 
 if __name__ == "__main__":
