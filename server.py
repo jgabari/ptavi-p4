@@ -53,7 +53,7 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
                     self.diccionario[client]['expires'] = expires
                     self.register2json()
         print(self.diccionario)
-        self.wfile.write(b"SIP/2.0 200 OK")
+        self.wfile.write(b"SIP/2.0 200 OK\r\n\r\n")
 
     def expiration(self):
         """
